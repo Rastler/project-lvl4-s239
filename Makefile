@@ -1,7 +1,7 @@
-install: install-deps install-flow-typed
+install: install-deps
 
 run:
-	npm run babel-node -- 'src/bin/hexlet.js' 10
+	npm run babel-node -- 'src/bin/server.js'
 
 install-deps:
 	npm install

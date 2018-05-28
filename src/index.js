@@ -1,8 +1,14 @@
 import Koa from 'koa';
 import Rollbar from 'rollbar';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = new Koa();
-const rollbar = new Rollbar('adb75d0f2ad7418d9f33a19568827e0d');
+const rollbar = new Rollbar(process.env.ROLLBAR_ID);
+
+app.on('error', (err, ctx) => {
+  rollbar.log('Server error', err);
+})
 
 app.use(async (ctx, next) => {
   const start = Date.now();
