@@ -6,9 +6,9 @@ dotenv.config();
 const app = new Koa();
 const rollbar = new Rollbar(process.env.ROLLBAR_ID);
 
-app.on('error', (err, ctx) => {
+app.on('error', (err) => {
   rollbar.log('Server error', err);
-})
+});
 
 app.use(async (ctx, next) => {
   const start = Date.now();

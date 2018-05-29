@@ -4,4 +4,4 @@ dist
 flow-typed
 .tern-port
 .idea
-!/.env
+.env

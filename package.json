@@ -21,17 +21,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hexlet-boilerplates/nodejs-package.git"
+    "url": "git+https://github.com/Rastler/project-lvl4-s239.git"
   },
   "author": "Roman Averin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hexlet-boilerplates/nodejs-package/issues"
+    "url": "https://github.com/Rastler/project-lvl4-s239.git/issues"
   },
   "jest": {
     "testEnvironment": "node"
   },
-  "homepage": "https://github.com/hexlet-boilerplates/nodejs-package#readme",
+  "homepage": "https://github.com/Rastler/project-lvl4-s239.git#readme",
   "dependencies": {
     "dotenv": "^5.0.1",
     "gulp": "^4.0.0",
