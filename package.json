@@ -7,7 +7,7 @@
     "server": "dist/bin/server.js"
   },
   "engines": {
-    "node": ">=8"
+    "node": "8.11.2"
   },
   "files": [
     "dist"
@@ -15,10 +15,11 @@
   "scripts": {
     "test": "jest",
     "babel-node": "babel-node",
+    "clean": "rm -rf dist && mkdir dist",
     "eslint": "eslint",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "postinstall": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
-    "start": "nf start"
+    "start": "node dist/bin/server.js"
   },
   "repository": {
     "type": "git",
