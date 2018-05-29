@@ -19,4 +19,9 @@ lint:
 publish:
 	npm publish
 
+deploy:
+	rm -rf dist
+	npm run build
+	git push heroku master
+
 .PHONY: test
