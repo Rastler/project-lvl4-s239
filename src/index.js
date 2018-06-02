@@ -1,31 +1,36 @@
 import Koa from 'koa';
-import Rollbar from 'rollbar';
+import Router from 'koa-router';
+import logger from 'koa-logger';
 import dotenv from 'dotenv';
+import Rollbar from 'rollbar';
+import debug from 'debug';
+
 
 dotenv.config();
-const app = new Koa();
 const rollbar = new Rollbar(process.env.ROLLBAR_ID);
 
-app.on('error', (err) => {
-  rollbar.log('Server error', err);
-});
+const app = new Koa();
+const router = new Router();
+
+app.use(logger());
 
 app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.set('X-Response-Time', `${ms}ms`);
+  try {
+    await next();
+  } catch (err) {
+    debug(err, ctx.request);
+    rollbar.error(err, ctx.request);
+    console.error(err, ctx.request);
+  }
 });
 
-app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  rollbar.log(`${ctx.method}: ${ctx.url} - ${ms}`);
+router.get('/', (ctx, next) => {
+  ctx.body = 'Hello World!';
+  next();
 });
 
-app.use(async (ctx) => {
-  ctx.body = 'Hello World';
-});
+app.use(router.routes());
+
+// app.on('error', errorsHandler);
 
 export default app;

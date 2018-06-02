@@ -18,6 +18,7 @@
     "clean": "rm -rf dist && mkdir dist",
     "eslint": "eslint",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "webpack": "webpack",
     "postinstall": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "start": "node dist/bin/server.js"
   },
@@ -35,22 +36,32 @@
   },
   "homepage": "https://github.com/Rastler/project-lvl4-s239.git#readme",
   "dependencies": {
+    "bootstrap": "^4.1.1",
+    "debug": "^3.1.0",
     "dotenv": "^5.0.1",
     "foreman": "3.0.0",
     "gulp": "^4.0.0",
+    "jquery": "^3.3.1",
     "koa": "^2.5.1",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "popper.js": "^1.14.3",
+    "postcss": "^6.0.22",
     "rollbar": "^2.4.0"
   },
   "devDependencies": {
+    "autoprefixer": "^8.5.2",
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.2",
     "babel-jest": "^22.4.3",
+    "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "*",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
-    "debug": "^3.1.0",
+    "babel-register": "^6.26.0",
+    "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-babel": "^5.0.0",
@@ -58,6 +69,13 @@
     "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-jest": "^21.15.0",
     "jest": "^22",
-    "jest-cli": "^22.4.3"
+    "jest-cli": "^22.4.3",
+    "node-sass": "^4.9.0",
+    "postcss-loader": "^2.1.5",
+    "precss": "^3.1.2",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4"
   }
 }
