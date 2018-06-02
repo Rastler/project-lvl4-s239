@@ -12,7 +12,6 @@ build:
 	npm run build
 	npm run webpack
 
-
 test:
 	npm test
 
