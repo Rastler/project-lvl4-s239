@@ -4,13 +4,13 @@ import autoprefixer from 'autoprefixer';
 import precss from 'precss';
 
 export default () => ({
-  mode: 'development',
+  // mode: 'production',
   entry: {
-    app: './src/front-app/app.js',
+    app: './src/client-app/app.js',
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '../dist/client-app'),
+    path: path.resolve(__dirname, 'dist/client-app'),
   },
   module: {
     rules: [
@@ -48,4 +48,9 @@ export default () => ({
     'window.jQuery': 'jquery',
     Popper: ['popper.js', 'default'],
   })],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 });

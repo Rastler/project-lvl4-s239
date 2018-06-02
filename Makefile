@@ -7,11 +7,16 @@ install-deps:
 	rm -rf node_modules
 	npm install
 
-build:
+build-dev:
 	rm -rf dist
 	npm run build
-	npm run webpack
+	npm run webpack-dev
 
+build-production:
+	rm -rf dist
+	npm run build
+	npm run webpack-production
+	
 test:
 	npm test
 

@@ -17,9 +17,10 @@
     "babel-node": "babel-node",
     "clean": "rm -rf dist && mkdir dist",
     "eslint": "eslint",
-    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
-    "webpack": "webpack",
-    "postinstall": "NODE_ENV=production babel src --out-dir dist --source-maps inline && webpack",
+    "build": "NODE_ENV=development babel src --out-dir dist --source-maps inline",
+    "webpack-dev": "webpack --mode development",
+    "webpack-production": "webpack --mode production",
+    "postinstall": "NODE_ENV=production babel src --out-dir dist --source-maps inline && webpack --mode production",
     "start": "node dist/bin/server.js"
   },
   "repository": {
