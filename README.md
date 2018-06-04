@@ -2,6 +2,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/32317162a06b3dccb13b/maintainability)](https://codeclimate.com/github/Rastler/project-lvl4-s239/maintainability)
 [![Build Status](https://travis-ci.org/Rastler/project-lvl4-s239.svg?branch=master)](https://travis-ci.org/Rastler/project-lvl4-s239)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/32317162a06b3dccb13b/test_coverage)](https://codeclimate.com/github/Rastler/project-lvl4-s239/test_coverage)
 
 ## Notes
 This is four project on hexlet.io
