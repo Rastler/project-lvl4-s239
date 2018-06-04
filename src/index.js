@@ -1,13 +1,12 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import logger from 'koa-logger';
-import dotenv from 'dotenv';
 import Rollbar from 'rollbar';
 import debug from 'debug';
 
+import config from './config';
 
-dotenv.config();
-const rollbar = new Rollbar(process.env.ROLLBAR_ID);
+const rollbar = new Rollbar(config.rollbarId);
 
 const app = new Koa();
 const router = new Router();
