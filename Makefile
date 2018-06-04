@@ -29,4 +29,7 @@ publish:
 deploy:
 	git push heroku master
 
+test-coverage:
+	npm test -- --coverage
+
 .PHONY: test
