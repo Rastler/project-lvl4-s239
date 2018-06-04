@@ -6,7 +6,11 @@ import debug from 'debug';
 
 import config from './config';
 
-const rollbar = new Rollbar(config.rollbarId);
+const rollbar = new Rollbar({
+  accessToken: config.rollbarId,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+});
 
 const app = new Koa();
 const router = new Router();
