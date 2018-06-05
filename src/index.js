@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import Router from 'koa-router';
+// import Router from 'koa-router';
 import logger from 'koa-logger';
 import serve from 'koa-static';
 import Rollbar from 'rollbar';
@@ -15,7 +15,7 @@ const rollbar = new Rollbar({
 });
 
 const app = new Koa();
-const router = new Router();
+// const router = new Router();
 
 app.use(logger());
 
