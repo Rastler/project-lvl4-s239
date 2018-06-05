@@ -1,7 +1,9 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import logger from 'koa-logger';
+import serve from 'koa-static';
 import Rollbar from 'rollbar';
+import pathlib from 'path';
 import debug from 'debug';
 
 import config from './config';
@@ -27,12 +29,14 @@ app.use(async (ctx, next) => {
   }
 });
 
-router.get('/', (ctx, next) => {
-  ctx.body = 'Hello World!';
-  next();
-});
+app.use(serve(pathlib.resolve('dist/client-app/')));
 
-app.use(router.routes());
+// router.get('/', (ctx, next) => {
+//   ctx.body = 'Hello World!';
+//   next();
+// });
+
+// app.use(router.routes());
 
 // app.on('error', errorsHandler);
 
