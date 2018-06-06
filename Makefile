@@ -1,7 +1,7 @@
 install: install-deps
 
 run:
-	npm run babel-node -- 'src/bin/server.js'
+	npm run nodemon -- --exec babel-node ./dist/bin/server.js
 
 install-deps:
 	rm -rf node_modules
@@ -22,9 +22,6 @@ test:
 
 lint:
 	npm run eslint .
-
-publish:
-	npm publish
 
 deploy:
 	git push heroku master
