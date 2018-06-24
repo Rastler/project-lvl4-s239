@@ -1,0 +1,32 @@
+mixin formFor(formObj, options = {})
+  - const url = _.get(options, 'url');
+  - const method = _.get(options, 'method', 'get').toLowerCase();
+  - const isStandart = _.includes(['get', 'post'], method);
+  form(action= url method= isStandart ? method : 'post')
+    if !isStandart
+      input(name='_method' type='hidden' value= method)
+    block
+
+
+mixin input(formObj, property, label, options = { as: 'text' })
+  - const value = formObj.object[property] === undefined || property === 'password' ? '' : formObj.object[property]
+  .form-group
+    label= label
+    if formObj.errors[property]
+      input(name=property class='form-control is-invalid' type=options.as value=`${value}`)
+      .invalid-feedback= formObj.errors[property].map(({ message }) => message).join('. ')
+    else
+      input(name=property class='form-control is-valid' type=options.as value=`${value}`)
+
+
+
+mixin button(value = 'Submit', type = 'submit', style)
+  .form-group.pt-3
+  - const choice = `${style}`
+  case choice
+    default
+      input(class='btn btn-block btn-primary' type=`${type}` value=`${value}`)
+      - break
+    when 'danger'
+      input(class='btn btn-block btn-danger' type=`${type}` value=`${value}`)
+      - break

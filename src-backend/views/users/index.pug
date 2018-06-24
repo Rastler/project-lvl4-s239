@@ -1,0 +1,16 @@
+extends /layouts/application.pug
+
+block content
+  .container.pt-3
+    table.table
+      thead.thead-light
+        tr
+          th Full Name
+          th Email
+          th Created At
+      tbody
+          each user in users
+            tr
+              td= user.getFullName()
+              td= user.email
+              td= user.createdAt

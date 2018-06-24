@@ -1,0 +1,20 @@
+{
+  "development": {
+    "storage": "./db.development.sqlite",
+    "dialect": "sqlite",
+    "operatorsAliases": "Sequelize.Op"
+  },
+  "test": {
+    "storage": ":memory:",
+    "dialect": "sqlite",
+    "operatorsAliases": "Sequelize.Op"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialectOptions": {
+      "ssl": true
+    },
+    "logging": false,
+    "operatorsAliases": "Sequelize.Op"
+  }
+}

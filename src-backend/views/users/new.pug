@@ -1,0 +1,16 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .py-4.text-center
+      h2 Registration
+      p.h6
+        | Please fill form and push submit
+
+  .container.col-md-2
+    +formFor(formObj, { url: urlFor('users'), method: 'post' })
+      +input(formObj, 'email', 'Email')
+      +input(formObj, 'firstName', 'First name')
+      +input(formObj, 'lastName', 'Last name')
+      +input(formObj, 'password', 'Password', { as: 'password' })
+      +button()

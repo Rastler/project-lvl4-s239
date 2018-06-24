@@ -1,0 +1,18 @@
+include /mixins/forms.pug
+- const msg = flash.get()
+
+doctype html
+html(lang="ru")
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description' content='Simple task manager')
+    title= title ? title : 'Task Manager'
+    script(src='/static/bundle.js')
+    script(src='/static/vendors.bundle.js')
+  body
+    include navbar.pug
+    if msg
+      .container
+        .alert.alert-info.m-3= msg
+    block content

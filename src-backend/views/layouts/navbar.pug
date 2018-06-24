@@ -1,0 +1,27 @@
+header
+  nav.navbar.navbar-expand-md.navbar-dark.bg-dark
+    .container
+      a.navbar-brand(href="/") Task Manager
+      button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      .collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item
+            a.nav-link(href=urlFor('users')) All users
+        ul.navbar-nav
+          if isSignedIn()
+            li.nav-item.dropdown
+                a.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                  | Account
+                .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
+                  a.dropdown-item(href=urlFor('editUser', getUserId())) Edit account
+            li.nav-item
+            +formFor(formObj, { url: urlFor('sessionDelete'), method: 'delete' }).form-inline
+               button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Sign out
+          else
+            li.nav-item
+              a.nav-link(href=urlFor('newSession')) Sign In
+            li.nav-item
+              form.form-inline.my-2.my-lg-0(action=urlFor('newUser'))
+                button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Register
+                

@@ -1,0 +1,14 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .py-4.text-center
+      h2 Sign in
+      p.h6
+        | Please enter email and password for sign in.
+
+  .container.col-md-2
+    +formFor(formObj, { url: urlFor('session'), method: 'post' })
+      +input(formObj, 'email', 'Email')
+      +input(formObj, 'password', 'Password', { as: 'password' })
+      +button('Sign in')

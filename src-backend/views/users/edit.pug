@@ -1,0 +1,19 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .pt-4.pb-5.text-center
+      h2 Edit account
+
+  
+    .row
+      .container.col-md-4
+        +formFor(formObj, { url: urlFor('users'), method: 'patch' })
+            h4 Account details
+            hr
+            +input(formObj, 'email', 'Email')
+            +input(formObj, 'firstName', 'First name')
+            +input(formObj, 'lastName', 'Last name')
+            +button('Save changes')
+        +formFor(formObj, { url: urlFor('users'), method: 'delete' })
+            +button('Delete account', 'submit', 'danger')
