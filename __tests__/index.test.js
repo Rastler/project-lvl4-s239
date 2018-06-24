@@ -1,7 +1,7 @@
 import request from 'supertest';
 import matchers from 'jest-supertest-matchers';
 
-import app from '..';
+import app from '../src-backend';
 
 describe('requests', () => {
   let server;

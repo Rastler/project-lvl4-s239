@@ -6,3 +6,4 @@ flow-typed
 .idea
 .env
 coverage
+*.sqlite

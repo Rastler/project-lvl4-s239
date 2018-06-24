@@ -3,15 +3,16 @@ import path from 'path';
 import autoprefixer from 'autoprefixer';
 import precss from 'precss';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 export default () => ({
-  // mode: 'production',
+  mode: 'development',
   entry: {
-    app: './src/client-app/app.js',
+    app: './src-frontend/app.js',
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist/client-app'),
+    path: path.resolve(__dirname, 'dist/static'),
   },
   module: {
     rules: [
@@ -51,13 +52,24 @@ export default () => ({
       Popper: ['popper.js', 'default'],
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: './src/client-app/testing.html',
+      filename: 'testing.html',
+      template: './src-frontend/testing.html',
     }),
+    new webpack.HashedModuleIdsPlugin(),
+    new CopyWebpackPlugin([{
+      from: 'src-backend/views',
+      to: '../views',
+    }]),
   ],
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
     },
   },
 });

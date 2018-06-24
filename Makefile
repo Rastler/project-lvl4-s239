@@ -1,7 +1,10 @@
 install: install-deps
 
 run:
-	npm run nodemon -- --exec babel-node ./dist/bin/server.js
+	DEBUG="app:*" npm run start
+
+watch:
+	DEBUG="app:*" npm run nodemon -- --watch . -e js,pug --exec 'rm -rf dist && npm run build && npm run webpack-production && npm run start'
 
 install-deps:
 	rm -rf node_modules
