@@ -1,4 +1,13 @@
 {
   "verbose": true,
-  "ignore": ["dist", "node_modules"]
+  "ignore": ["dist/", "node_modules/"],
+  "watch": [
+    "src-backend/*",
+    "src-frontend/*"
+  ],
+  "env": {
+    "DEBUG": "app:*"
+  },
+  "ext": "js,pug",
+  "delay": "2000"
 }
