@@ -8,12 +8,13 @@ block content
   
     .row
       .container.col-md-4
-        +formFor(formObj, { url: urlFor('users'), method: 'patch' })
             h4 Account details
             hr
-            +input(formObj, 'email', 'Email')
-            +input(formObj, 'firstName', 'First name')
-            +input(formObj, 'lastName', 'Last name')
-            +button('Save changes')
-        +formFor(formObj, { url: urlFor('users'), method: 'delete' })
-            +button('Delete account', 'submit', 'danger')
+            +formFor(formObj, { url: urlFor('users'), method: 'patch' })
+              +input(formObj, 'email', 'Email')
+              +input(formObj, 'firstName', 'First name')
+              +input(formObj, 'lastName', 'Last name')
+              +button('Save')
+            +formFor(formObj, { url: urlFor('users'), method: 'delete', confirm: 'Are yoy sure to delete account?' })
+              +button('Delete', 'submit', 'danger')
+              

@@ -12,7 +12,7 @@ const debug = debugLib('app:routes:sessions');
 export default (router) => {
   router
     .get('newSession', '/session/new', async (ctx) => {
-      const data = {};
+      const data = ctx.request.body || {};
       ctx.render('sessions/new', { formObj: buildFormObj(data), title: 'SignIn' });
     })
 
@@ -38,7 +38,7 @@ export default (router) => {
 
       ctx.flash.set('Email or password were wrong');
       ctx.set('Authenticated', 'no');
-      ctx.redirect(router.url('newSession'));
+      ctx.render('sessions/new', { formObj: buildFormObj(user), title: 'Sign In' });
     })
 
 

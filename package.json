@@ -51,6 +51,7 @@
     "gulp-util": "^3.0.8",
     "jest-supertest-matchers": "0.0.1",
     "jquery": "^3.3.1",
+    "jquery-ujs": "^1.2.2",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-flash-simple": "0.0.3",

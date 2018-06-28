@@ -13,6 +13,7 @@ export default (router) => {
       debug('users form database', users);
       ctx.render('users', { users });
     })
+
     .get('newUser', '/users/new', (ctx) => {
       const user = User.build();
       ctx.render('users/new', { formObj: buildFormObj(user), title: 'Registration' });
@@ -71,7 +72,7 @@ export default (router) => {
           ctx.flash.set('Your account has been changed.');
           ctx.redirect(router.url('editUser'));
         } catch (err) {
-          debug('error', err);
+          debug('Error: ', err);
           ctx.render('users/edit', { formObj: buildFormObj(user, err), title: `Edit account: ${user.getFullName()}` });
         }
       },
