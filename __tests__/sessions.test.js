@@ -39,7 +39,7 @@ describe('requests', () => {
     const res = await request.agent(server)
       .post('/session')
       .send(wrongDataTestForm);
-    expect(res).toHaveHTTPStatus(302);
+    expect(res).toHaveHTTPStatus(200);
     expect(res.headers.authenticated).toBe('no');
   });
 

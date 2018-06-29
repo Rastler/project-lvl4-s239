@@ -13,19 +13,19 @@ export default (router) => {
   router
     .get('newSession', '/session/new', async (ctx) => {
       const data = ctx.request.body || {};
-      ctx.render('sessions/new', { formObj: buildFormObj(data), title: 'SignIn' });
+      ctx.render('sessions/new', { formObj: buildFormObj(data), title: 'Sign In' });
     })
 
 
     .post('session', '/session', async (ctx) => {
-      const { email, password } = ctx.request.body;
+      const form = ctx.request.body;
       const user = await User.findOne({
         where: {
-          email: email.toLowerCase(),
+          email: form.email.toLowerCase(),
         },
       });
 
-      if (user && user.passwordDigest === encrypt(password)) {
+      if (user && user.passwordDigest === encrypt(form.password)) {
         ctx.session.userId = user.id;
         debug('Correct password, you were authenticated');
         debug('ctx.session:', ctx.session);
@@ -35,10 +35,16 @@ export default (router) => {
         ctx.redirect(router.url('root'));
         return;
       }
-
-      ctx.flash.set('Email or password were wrong');
+      debug('User obj: ', user);
+      const err = {
+        errors:
+        [
+          { path: 'email', message: 'Email or password were wrong' },
+          { path: 'password' },
+        ],
+      };
       ctx.set('Authenticated', 'no');
-      ctx.render('sessions/new', { formObj: buildFormObj(user), title: 'Sign In' });
+      ctx.render('sessions/new', { formObj: buildFormObj(form, err), title: 'Error sign in' });
     })
 
 
