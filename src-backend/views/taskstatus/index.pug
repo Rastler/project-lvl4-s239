@@ -1,0 +1,23 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .pt-4.pb-5.text-center
+      h2 Task status list
+
+    .container  
+    table.table
+      thead.thead-light
+        tr
+          th Name
+          th Actions
+      tbody
+        each status in statuses
+          tr
+            td= status.name
+            td  
+                .clearfix
+                  +formFor(formObj, { url: urlFor('editTaskStatus', status.id) })
+                    button.btn.btn-sm.btn-primary.mx-2.float-left(type='submit') Edit
+                  +formFor(formObj, { url: urlFor('deleteTaskStatus', status.id), method: 'delete', confirm: 'Are you sure to delete?' })
+                    button.btn.btn-sm.btn-danger.float-left(type='submit') Delete

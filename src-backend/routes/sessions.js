@@ -1,9 +1,9 @@
 import debugLib from 'debug';
 import dotenv from 'dotenv';
 
-import buildFormObj from '../lib/formObjectBuilder';
 import { encrypt } from '../lib/secure';
 import { User } from '../models';
+import helper from '../lib/helper';
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ export default (router) => {
   router
     .get('newSession', '/session/new', async (ctx) => {
       const data = ctx.request.body || {};
-      ctx.render('sessions/new', { formObj: buildFormObj(data), title: 'Sign In' });
+      ctx.render('sessions/new', { formObj: helper.formObjectBuilder(data), title: 'Sign In' });
     })
 
 
@@ -32,7 +32,7 @@ export default (router) => {
 
         ctx.flash.set(`Welcome, ${user.getFullName()}`);
         ctx.set('Authenticated', 'yes');
-        ctx.redirect(router.url('root'));
+        ctx.redirect(router.url('tasks'));
         return;
       }
       debug('User obj: ', user);
@@ -44,7 +44,7 @@ export default (router) => {
         ],
       };
       ctx.set('Authenticated', 'no');
-      ctx.render('sessions/new', { formObj: buildFormObj(form, err), title: 'Error sign in' });
+      ctx.render('sessions/new', { formObj: helper.formObjectBuilder(form, err), title: 'Error sign in' });
     })
 
 

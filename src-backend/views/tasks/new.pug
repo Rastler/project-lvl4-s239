@@ -1,0 +1,27 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .py-4.text-center
+      h2 Add new task
+      p.h6
+        | Please fill form and push submit
+
+  .container.col-md-2
+    +formFor(formObj, { url: urlFor('tasks'), method: 'post' })
+      +input(formObj, 'name', 'Name')
+      +input(formObj, 'description', 'Description')
+
+      .form-group
+        label Status
+        input(value='New' class='form-control' readonly)
+
+      .form-group
+        label Executer
+        select.form-control(name= 'executer')
+          if users.length > 0
+            each user in users
+              option(value=user.id)= `${user.getFullName()}`
+      
+      +input(formObj, 'tags', 'Tags')
+      +button()

@@ -59,7 +59,7 @@ export default (sequelize, DataTypes) => {
   });
 
 
-  User.associate = function () {}; // eslint-disable-line
+  User.associate = function (models) {}; // eslint-disable-line
 
   User.prototype.getFullName = function () { // eslint-disable-line
     return [this.firstName, this.lastName].join(' ');

@@ -1,0 +1,13 @@
+extends /layouts/application.pug
+
+block content
+  .container
+    .py-4.text-center
+      h2 Add new task status
+      p.h6
+        | Please fill form and push submit
+
+  .container.col-md-2
+    +formFor(formObj, { url: urlFor('taskStatus'), method: 'post' })
+      +input(formObj, 'name', 'Name')
+      +button()

@@ -1,0 +1,58 @@
+extends /layouts/application.pug
+block content
+  .container
+      .pt-4.pb-5.text-center
+        h2 Task list
+        hr
+        form(action=urlFor('tasks') method='get')
+          .card.text-center.text-white.bg-secondary
+            .card-header Filtring
+            .card-body
+              .container
+                .row
+                  .col-sm
+                    .form-group
+                      +filterCheckbox('userTaskOnly', 'true', 'Only my tasks', checked)
+                  .col-sm
+                    .form-group
+                      label Tags
+                      input.form-control(type='text' value=searchTags placeholder='Search' aria-label='Search' method='get' name='searchTags')
+                  .col-sm
+                    .form-group
+                      label Status
+                      +selectStatus(allStatuses, 'filtredStatus', selectedStatus)
+                  .col-sm
+                    .form-group
+                      label Executer
+                      +selectUser(allUsers, 'filtredExecuter', selectedExecuter)
+                .row.justify-content-center
+                  .col-4
+                    +button('Apply', 'submit', 'light')
+
+  .container.pt-3
+    .table-responsive-sm
+      table.table
+        thead.thead-light
+          tr
+            th Status
+            th Name
+            th Description
+            th Author
+            th Executer
+            th Tags
+            th Actions
+        tbody
+            each task in tasks
+              tr
+                td= task.status
+                td= task.name
+                td= task.description
+                td= task.author
+                td= task.executer
+                td.align-middle
+                    each tag in task.tags
+                      a.btn.btn-dark.btn-sm.m-1(href=urlFor('tasks', { query: { searchTags: `${tag}` } }))= tag
+                td.align-middle.col-sm-2
+                    a.btn.btn-primary.btn-sm.m-1(href=urlFor('editTask', task.id)) Edit
+                    a.btn.btn-danger.btn-sm.m-1(href=urlFor('deleteTask', task.id) data-method='delete' data-confirm='Are you sure you want to delete task?') Del
+                

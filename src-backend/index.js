@@ -42,7 +42,10 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.use(koaLogger());
+if (process.env.NODE_ENV !== 'test') {
+  app.use(koaLogger());
+}
+
 app.use(session(app));
 app.use(flash());
 app.use(async (ctx, next) => {

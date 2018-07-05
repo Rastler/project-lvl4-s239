@@ -10,10 +10,21 @@ header
             a.nav-link(href=urlFor('users')) All users
         ul.navbar-nav
           if isSignedIn()
+            li.nav-item
+                form.form-inline.my-2.my-lg-0(action=urlFor('newTask'))
+                  button.btn.btn-outline-second.my-2.my-sm-0(type="submit") New task
+            li.nav-item
+                  a.nav-link(href=urlFor('tasks')) Tasks
+            li.nav-item.dropdown
+                a.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                  | Tasks status
+                .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownTaskStatus')
+                  a.dropdown-item(href=urlFor('newTaskStatus')) New
+                  a.dropdown-item(href=urlFor('taskStatus')) Edit
             li.nav-item.dropdown
                 a.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
                   | Account
-                .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
+                .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownAccount')
                   a.dropdown-item(href=urlFor('editUser', getUserId())) Edit account
             li.nav-item
             +formFor(formObj, { url: urlFor('sessionDelete'), method: 'delete' }).form-inline

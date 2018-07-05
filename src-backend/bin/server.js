@@ -9,9 +9,9 @@ dotenv.config();
 
 const debug = debuglib('app:start');
 const port = process.env.PORT || 5000;
+debug(port);
 
-initDb();
-app.listen(port, () => {
+app.listen(port, async () => {
+  await initDb();
   console.log('Server started on port:', port);
-  debug('Server listening on port ', port);
 });

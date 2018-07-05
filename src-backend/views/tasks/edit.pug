@@ -1,0 +1,23 @@
+extends /layouts/application.pug
+
+block content
+  - const taskId = formObj.object.id;
+  .container
+     .pt-4.pb-5.text-center
+      h2 Edit Task
+
+  .container.col-md-4
+    +formFor(formObj, { url: urlFor('changeTask', taskId), method: 'patch' })
+      +input(formObj, 'name', 'Name')
+      +input(formObj, 'description', 'Description')
+      .form-group
+        label= 'tags'
+        input(name='tags' class='form-control' type='text' value= tags ? tags : '')
+      .form-group
+        label Status
+        +selectStatus(allStatuses, 'status', currentStatus, 'editMode')
+      .form-group
+        label Executer
+        +selectUser(allUsers, 'exectuter', currentExecuter, 'editMode')
+      
+      +button()
