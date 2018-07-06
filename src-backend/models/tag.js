@@ -9,9 +9,9 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  Tag.associate = function (models) {
+  Tag.associate = (models) => {
     Tag.belongsToMany(models.Task, { through: 'TagsForTask' });
-  }; // eslint-disable-line
+  };
 
   return Tag;
 };
