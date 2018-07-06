@@ -9,19 +9,6 @@ dotenv.config();
 const debug = debuglib('app:initDb');
 
 const initTables = async () => {
-  TaskStatus.hasMany(Task, { foreignKey: 'status', as: 'Tasks' });
-  Task.belongsTo(TaskStatus, { foreignKey: 'status', as: 'Status' });
-
-  User.hasMany(Task, { foreignKey: 'creator', as: 'Author' });
-  Task.belongsTo(User, { foreignKey: 'creator', as: 'Author' });
-
-  User.hasMany(Task, { foreignKey: 'assignedTo', as: 'Executer' });
-  Task.belongsTo(User, { foreignKey: 'assignedTo', as: 'Executer' });
-
-  Task.belongsToMany(Tag, { through: 'TagsForTask' });
-  Tag.belongsToMany(Task, { through: 'TagsForTask' });
-
-
   try {
     await User.sync({ force: true });
     debug('Create tables User');

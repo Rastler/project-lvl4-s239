@@ -20,7 +20,9 @@ export default (sequelize, DataTypes) => {
   });
 
 
-  TaskStatus.associate = function (models) {}; // eslint-disable-line
+  TaskStatus.associate = function (models) {
+    TaskStatus.hasMany(models.Task, { foreignKey: 'status', as: 'Tasks' });
+  }; // eslint-disable-line
 
   return TaskStatus;
 };

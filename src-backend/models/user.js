@@ -59,7 +59,11 @@ export default (sequelize, DataTypes) => {
   });
 
 
-  User.associate = function (models) {}; // eslint-disable-line
+  User.associate = function (models) {
+    User.hasMany(models.Task, { foreignKey: 'creator', as: 'Author' });
+    User.hasMany(models.Task, { foreignKey: 'assignedTo', as: 'Executer' });
+  }; // eslint-disable-line
+
 
   User.prototype.getFullName = function () { // eslint-disable-line
     return [this.firstName, this.lastName].join(' ');

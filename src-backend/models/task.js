@@ -33,7 +33,12 @@ export default (sequelize, DataTypes) => {
   });
 
 
-  Task.associate = function (models) {}; // eslint-disable-line
+  Task.associate = function (models) {
+    Task.belongsTo(models.TaskStatus, { foreignKey: 'status', as: 'Status' });
+    Task.belongsTo(models.User, { foreignKey: 'creator', as: 'Author' });
+    Task.belongsTo(models.User, { foreignKey: 'assignedTo', as: 'Executer' });
+    Task.belongsToMany(models.Tag, { through: 'TagsForTask' });
+  }; // eslint-disable-line
 
   // Task.prototype.getStatus = async function () { // eslint-disable-line
   //   const status = await this.getStatuses();
