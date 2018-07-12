@@ -1,3 +1,7 @@
+const Sequelize = require('sequelize');
+
+const { Op } = Sequelize;
+
 export default (sequelize, DataTypes) => {
   const Task = sequelize.define('Task', {
     name: {
@@ -30,6 +34,24 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+  }, {
+    scopes: {
+      onlyAuthorId: (id => ({
+        where: {
+          creator: id,
+        },
+      })),
+      assignToId: (id => ({
+        where: {
+          assignedTo: id,
+        },
+      })),
+      onlyStatusId: (id => ({
+        where: {
+          status: id,
+        },
+      })),
+    },
   });
 
 
@@ -38,6 +60,21 @@ export default (sequelize, DataTypes) => {
     Task.belongsTo(models.User, { foreignKey: 'creator', as: 'Author' });
     Task.belongsTo(models.User, { foreignKey: 'assignedTo', as: 'Executer' });
     Task.belongsToMany(models.Tag, { through: 'TagsForTask' });
+  };
+
+  Task.loadScopes = (models) => {
+    Task.addScope('hasTag', tagName => ({
+      include: [
+        {
+          model: models.Tag,
+          where: {
+            name: {
+              [Op.like]: tagName,
+            },
+          },
+        },
+      ],
+    }));
   };
 
   // Task.prototype.getStatus = async function () { // eslint-disable-line

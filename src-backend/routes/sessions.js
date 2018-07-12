@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 import { encrypt } from '../lib/secure';
 import { User } from '../models';
-import helper from '../lib/helper';
+import formObjectBuilder from '../lib/formObjectBuilder';
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ export default (router) => {
   router
     .get('newSession', '/session/new', async (ctx) => {
       const data = ctx.request.body || {};
-      ctx.render('sessions/new', { formObj: helper.formObjectBuilder(data), title: 'Sign In' });
+      ctx.render('sessions/new', { formObj: formObjectBuilder(data), title: 'Sign In' });
     })
 
 
@@ -44,7 +44,7 @@ export default (router) => {
         ],
       };
       ctx.set('Authenticated', 'no');
-      ctx.render('sessions/new', { formObj: helper.formObjectBuilder(form, err), title: 'Error sign in' });
+      ctx.render('sessions/new', { formObj: formObjectBuilder(form, err), title: 'Error sign in' });
     })
 
 

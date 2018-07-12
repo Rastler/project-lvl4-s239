@@ -2,7 +2,7 @@ import debuglib from 'debug';
 
 import { User } from '../models';
 import auth from '../lib/auth';
-import helper from '../lib/helper';
+import formObjectBuilder from '../lib/formObjectBuilder';
 
 const debug = debuglib('app:routers:user');
 
@@ -16,7 +16,7 @@ export default (router) => {
 
     .get('newUser', '/users/new', (ctx) => {
       const user = User.build();
-      ctx.render('users/new', { formObj: helper.formObjectBuilder(user), title: 'Registration' });
+      ctx.render('users/new', { formObj: formObjectBuilder(user), title: 'Registration' });
     })
 
     .post('users', '/users', async (ctx) => {
@@ -29,7 +29,7 @@ export default (router) => {
         ctx.redirect(router.url('root'));
       } catch (err) {
         debug('Error obj: ', err);
-        ctx.render('users/new', { formObj: helper.formObjectBuilder(user, err) });
+        ctx.render('users/new', { formObj: formObjectBuilder(user, err) });
       }
     })
 
@@ -50,7 +50,7 @@ export default (router) => {
           ctx.redirect(router.url('root'));
           return;
         }
-        ctx.render('users/edit', { formObj: helper.formObjectBuilder(user), title: `Edit account: ${user.getFullName()}` });
+        ctx.render('users/edit', { formObj: formObjectBuilder(user), title: `Edit account: ${user.getFullName()}` });
       },
     )
 
@@ -74,7 +74,7 @@ export default (router) => {
           ctx.redirect(router.url('editUser'));
         } catch (err) {
           debug('Error: ', err);
-          ctx.render('users/edit', { formObj: helper.formObjectBuilder(user, err), title: `Edit account: ${user.getFullName()}` });
+          ctx.render('users/edit', { formObj: formObjectBuilder(user, err), title: `Edit account: ${user.getFullName()}` });
         }
       },
     )

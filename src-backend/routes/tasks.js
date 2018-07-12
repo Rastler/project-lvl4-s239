@@ -2,7 +2,9 @@ import debuglib from 'debug';
 import dotenv from 'dotenv';
 
 import { Task, User, Tag, TaskStatus } from '../models';
-import helper from '../lib/helper';
+import parseTagsString from '../lib/parseTagsString';
+import setTagsForTask from '../lib/setTagsToTask';
+import formObjectBuilder from '../lib/formObjectBuilder';
 import auth from '../lib/auth';
 
 dotenv.config();
@@ -11,40 +13,68 @@ const debug = debuglib('app:router:tasks');
 
 export default (router) => {
   router
-    .get('tasks', '/tasks', auth.checkSignIn(router), async (ctx) => {
+    .get('tasks', '/tasks', async (ctx) => {
       const allUsers = await User.findAll();
       const allStatuses = await TaskStatus.findAll();
 
       if (Object.keys(ctx.query).length === 0) {
-        const allTasks = await Task.findAll();
-        const preparedTasks = await helper.prerapeTaskList(allTasks);
+        const tasks = await Task.findAll({ include: [{ all: true }] });
         ctx.render('tasks', {
-          tasks: preparedTasks, allUsers, allStatuses, title: 'Task List',
+          tasks, allUsers, allStatuses, title: 'Task List',
         });
         return;
       }
 
       debug('ctx.query:', ctx.query);
 
-      const queryObject = ctx.query;
+      const {
+        filtredStatus,
+        filtredExecuter,
+        userTaskOnly,
+        searchTags,
+      } = ctx.query;
       const { userId } = await ctx.session;
+      const scope = [];
+      if (userId && userId !== '0') {
+        scope.push({ method: ['onlyAuthorId', userId] });
+      }
+      if (filtredStatus && filtredStatus !== '0') {
+        scope.push({ method: ['onlyStatusId', filtredStatus] });
+      }
+      if (filtredExecuter && filtredExecuter !== '0') {
+        scope.push({ method: ['assignToId', filtredExecuter] });
+      }
+      if (searchTags) {
+        const tagsArr = parseTagsString(searchTags);
+        scope.push({ method: ['hasTag', tagsArr[0]] });
+      }
+      debug('Scope options:\n', scope);
 
-      const options = helper.buildSearchOptions(queryObject, userId);
-      debug('Search options:\n', options);
+      const filteredTasks = await Task.scope(scope).findAll({
+        include: [
+          { all: true, nested: true },
+        ],
+      });
 
-      const filteredTasks = await Task.findAll(options);
-      const preparedTasks = await helper.prerapeTaskList(filteredTasks);
+      const selectedStatus = await TaskStatus.findOne({
+        where: {
+          id: filtredStatus,
+        },
+      });
+      const selectedExecuter = await User.findOne({
+        where: {
+          id: filtredExecuter,
+        },
+      });
 
-      const selectedStatus = await helper.getValueById(TaskStatus, queryObject.filtredStatus, 'name');
-      const selectedExecuter = await helper.getFullUserNameById(User, queryObject.filtredExecuter);
-      const checked = queryObject.userTaskOnly;
-      const { searchTags } = queryObject;
+      const selectedStatusName = selectedStatus ? selectedStatus.name : 'any';
+      const selectedExecuterFullName = selectedExecuter ? selectedExecuter.getFullName() : 'any';
 
       ctx.render('tasks', {
-        selectedStatus,
-        selectedExecuter,
-        checked,
-        tasks: preparedTasks,
+        selectedStatus: selectedStatusName,
+        selectedExecuter: selectedExecuterFullName,
+        checked: userTaskOnly,
+        tasks: filteredTasks,
         allUsers,
         allStatuses,
         searchTags,
@@ -55,7 +85,7 @@ export default (router) => {
     .get('newTask', '/tasks/new', auth.checkSignIn(router), async (ctx) => {
       const users = await User.findAll();
       const task = await Task.build();
-      ctx.render('tasks/new', { formObj: helper.formObjectBuilder(task), users, title: 'New task' });
+      ctx.render('tasks/new', { formObj: formObjectBuilder(task), users, title: 'New task' });
     })
 
     .get('editTask', '/tasks/:id', auth.checkSignIn(router), async (ctx) => {
@@ -76,7 +106,7 @@ export default (router) => {
         allStatuses,
         allUsers,
         tags: tagsString,
-        formObj: helper.formObjectBuilder(task),
+        formObj: formObjectBuilder(task),
         title: 'Task edit',
       });
     })
@@ -86,7 +116,7 @@ export default (router) => {
       const { userId } = await ctx.session;
       const form = await ctx.request.body;
       const executerId = form.executer;
-      const tags = helper.parseTagsString(form.tags);
+      const tags = parseTagsString(form.tags);
       const task = await Task.build(form);
 
       try {
@@ -94,14 +124,14 @@ export default (router) => {
         await task.setStatus(1); // add default status New
         await task.setAuthor(userId);
         await task.setExecuter(executerId);
-        helper.setTags(Tag, tags, task);
+        setTagsForTask(Tag, tags, task);
 
         ctx.flash.set('Task has been created');
         ctx.redirect(router.url('tasks'));
       } catch (err) {
         debug(err);
         const users = await User.findAll();
-        ctx.render('tasks/new', { formObj: helper.formObjectBuilder(task, err), users, title: 'New task(error)' });
+        ctx.render('tasks/new', { formObj: formObjectBuilder(task, err), users, title: 'New task(error)' });
       }
     })
 
@@ -109,7 +139,7 @@ export default (router) => {
       const { id } = ctx.params;
       const form = await ctx.request.body;
       const executerId = form.executer;
-      const tags = helper.parseTagsString(form.tags);
+      const tags = parseTagsString(form.tags);
       const users = await User.findAll();
       const statuses = await TaskStatus.findAll();
       const task = await Task.findOne({
@@ -121,10 +151,13 @@ export default (router) => {
       const statusId = form.status;
 
       try {
+        debug('From object: \n', form);
         await task.update(form);
         await task.setStatus(statusId);
         await task.setExecuter(executerId);
-        helper.setTags(Tag, tags, task);
+        const oldTags = await task.getTags();
+        debug('Exists tags: \n', oldTags);
+        setTagsForTask(Tag, tags, task);
 
         ctx.flash.set('Task has been updated');
         ctx.redirect(router.url('tasks'));
@@ -141,7 +174,7 @@ export default (router) => {
           users,
           statuses,
           tags: tagsString,
-          formObj: helper.formObjectBuilder(task, err),
+          formObj: formObjectBuilder(task, err),
           title: 'Edit Task (errors)',
         });
       }

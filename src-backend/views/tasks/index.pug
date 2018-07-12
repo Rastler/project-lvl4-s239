@@ -44,14 +44,14 @@ block content
         tbody
             each task in tasks
               tr
-                td= task.status
+                td= task.Status.name
                 td= task.name
                 td= task.description
-                td= task.author
-                td= task.executer
+                td= task.Author.firstName + ' ' + task.Author.lastName
+                td= task.Executer.firstName + ' ' + task.Executer.lastName
                 td.align-middle
-                    each tag in task.tags
-                      a.btn.btn-dark.btn-sm.m-1(href=urlFor('tasks', { query: { searchTags: `${tag}` } }))= tag
+                    each tag in task.Tags
+                      a.btn.btn-dark.btn-sm.m-1(href=urlFor('tasks', { query: { searchTags: `${tag.name}` } }))= tag.name
                 td.align-middle.col-sm-2
                     a.btn.btn-primary.btn-sm.m-1(href=urlFor('editTask', task.id)) Edit
                     a.btn.btn-danger.btn-sm.m-1(href=urlFor('deleteTask', task.id) data-method='delete' data-confirm='Are you sure you want to delete task?') Del

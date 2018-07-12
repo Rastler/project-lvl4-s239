@@ -2,7 +2,7 @@ import debugLib from 'debug';
 
 import { TaskStatus } from '../models';
 import auth from '../lib/auth';
-import helper from '../lib/helper';
+import formObjectBuilder from '../lib/formObjectBuilder';
 
 const debug = debugLib('app:routes:taskStatus');
 
@@ -12,12 +12,12 @@ export default (router) => {
       const statuses = await TaskStatus.findAll();
       const status = await TaskStatus.build({});
       debug('status:', status);
-      ctx.render('taskstatus', { statuses, formObj: helper.formObjectBuilder(status), title: 'Task status listing' });
+      ctx.render('taskstatus', { statuses, formObj: formObjectBuilder(status), title: 'Task status listing' });
     })
 
     .get('newTaskStatus', '/taskstatus/new', auth.checkSignIn(router), async (ctx) => {
       const taskStatus = TaskStatus.build();
-      ctx.render('taskstatus/new', { formObj: helper.formObjectBuilder(taskStatus), title: 'Add new task status' });
+      ctx.render('taskstatus/new', { formObj: formObjectBuilder(taskStatus), title: 'Add new task status' });
     })
 
     .post('taskStatus', '/taskstatus', auth.checkSignIn(router), async (ctx) => {
@@ -29,7 +29,7 @@ export default (router) => {
         ctx.flash.set(`Task status '${form.name}' has been created`);
         ctx.redirect(router.url('taskStatus'));
       } catch (err) {
-        ctx.render('taskstatus/new', { formObj: helper.formObjectBuilder(taskStatus, err) });
+        ctx.render('taskstatus/new', { formObj: formObjectBuilder(taskStatus, err) });
       }
     })
 
@@ -46,7 +46,7 @@ export default (router) => {
         ctx.redirect(router.url('taskStatus'));
         return;
       }
-      ctx.render('taskstatus/edit', { formObj: helper.formObjectBuilder(taskStatus), title: `Edit task status: ${taskStatus.name}` });
+      ctx.render('taskstatus/edit', { formObj: formObjectBuilder(taskStatus), title: `Edit task status: ${taskStatus.name}` });
     })
 
     .patch(
@@ -69,7 +69,7 @@ export default (router) => {
           ctx.redirect(router.url('taskStatus'));
         } catch (err) {
           debug('error', err);
-          ctx.render('taskstatus/edit', { formObj: helper.formObjectBuilder(taskStatus, err), title: `Edit task status: ${taskStatus.name}` });
+          ctx.render('taskstatus/edit', { formObj: formObjectBuilder(taskStatus, err), title: `Edit task status: ${taskStatus.name}` });
         }
       },
     )
